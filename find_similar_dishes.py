@@ -248,4 +248,4 @@ if __name__ == "__main__":
     finder.read_menu_data('Recipes_A.csv')
     finder.find_closest_matches(test_algos=True)
     cos_avg, kmeans_avg = finder.compare_algorithms()
-    finder.write_to_csv('Similar_Recipes_man_sub.csv')
+    finder.write_to_csv('Similar_Recipes.csv')

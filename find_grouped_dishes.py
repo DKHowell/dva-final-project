@@ -281,5 +281,5 @@ class SimilarDishFinder(object):
 if __name__ == "__main__":
     finder = SimilarDishFinder(use_health_labels=True)
     finder.read_menu_data('Recipes_A.csv', max_rows = 1000)
-    cos_avg, kmeans_avg = finder.compare_algorithms()
+    recipe_df, restaurant_df = finder.find_closest_matches(test_algos=False)
     finder.write_to_csv()

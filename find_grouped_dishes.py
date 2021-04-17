@@ -28,6 +28,7 @@ class SimilarDishFinder(object):
         self.use_health_labels = use_health_labels
         self.cos_sim_list = []
         self.kmeans_list = []
+        pd.options.mode.chained_assignment = None  # default='warn'
 
         if self.method not in ['tfidf', 'manual']:
             raise ValueError("method must be \'tfidf\' or \'manual\'")
@@ -84,16 +85,20 @@ class SimilarDishFinder(object):
 
         return inglist
 
-    def read_menu_data(self, filepath, max_rows=None):
+    def read_menu_data(self, filepaths, max_rows=None):
         """
         read in menu data from csv
 
-        :param filepath: filepath for menu data
-        :type filepath: str
+        :param filepath: list of filepaths for menu data
+        :type filepath: list of str
         :return: Pandas dataframe with cleaned recipe data
         :rtype: list of strings
         """
-        recipes = pd.read_csv(filepath, index_col=0)
+        recipes = pd.DataFrame()
+        for file in filepaths:
+            sub_df = pd.read_csv(file, index_col=0)
+            recipes = recipes.append(sub_df, ignore_index=True)
+
         #remove non-alphanumeirc characters from dish name
         recipes['Dish_Name'] = recipes['Dish_Name'].apply(lambda x: re.sub(r'[^a-zA-Z\s]*', '', x))
         recipes = recipes.groupby(['Restaurant_URL', 'Dish_Name'], as_index=False).first()
@@ -120,7 +125,7 @@ class SimilarDishFinder(object):
         self.restaurant_df = recipes[['Restaurant_URL', 'Dish_Name']]
         self.restaurant_df.sort_index(inplace=True)
 
-        recipes = recipes.groupby('Dish_Name', as_index=False)['restaurant_idxs','Restaurant_URL','Ingredients'].agg(list)
+        recipes = recipes.groupby('Dish_Name', as_index=False)[['restaurant_idxs','Restaurant_URL','Ingredients']].agg(list)
         recipes['Ingredients'] = recipes['Ingredients'].apply(lambda x: ' '.join([i for i in x]) if len(x)>1 else x[0])
 
         self.recipe_df = recipes
@@ -246,7 +251,8 @@ class SimilarDishFinder(object):
         self.recipe_df['Dishes_in_Cluster'] = cluster_indices
         self.recipe_df['Cluster_Dish_Names'] = cluster_names
 
-        self.recipe_df=self.recipe_df[['Dish_Name', 'restaurant_idxs', 'Top_5_Indices', 'Top_5_URLs', 'Top_5_Dish_Names']]
+        self.recipe_df=self.recipe_df[['Dish_Name', 'restaurant_idxs', 'Top_5_Indices',\
+                                       'Top_5_URLs', 'Top_5_Dish_Names', 'Similarity_Scores']]
         return self.recipe_df, self.restaurant_df
 
     def compare_algorithms(self, verbose = True):
@@ -280,6 +286,6 @@ class SimilarDishFinder(object):
 
 if __name__ == "__main__":
     finder = SimilarDishFinder(use_health_labels=True)
-    finder.read_menu_data('Recipes_A.csv', max_rows = 1000)
+    finder.read_menu_data(['Recipes_A.csv'], max_rows = 1000)
     recipe_df, restaurant_df = finder.find_closest_matches(test_algos=False)
     finder.write_to_csv()

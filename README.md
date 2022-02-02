@@ -51,7 +51,7 @@ To get more ideas of how we could clean up dish names, refer to the log file in 
 - Append to a text file where each row contains `restaurant_url`, `original_dish_name`, `matched_recipe`. This will make it easier to go between restaurant dish names -> recipes.
 -- Store all recipes in a Pandas DataFrame then convert it to a CSV
 
-# 4. [David Howell and Nicholas Davis] Creating Ingredient Vectors
+# 4. [David Howell] Creating Ingredient Vectors
 
 We took the matched restaurant dish and recipe data and converted it into vector representations of ingredients that can be used to calculate recipe similarity. The code for ingredient vector creation can be found in `dishes/find_similar_dishes.py`
 - For each list of ingredients (recipe), we cleaned the individual ingredient strings, stemmed each word, and then concatenated the cleaned ingredients into one long ingredient string. This was achieved through the function `clean_ingredients()`

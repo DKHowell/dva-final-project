@@ -1,5 +1,9 @@
 # dva-final-project
 
+# Overview
+
+This project uses scraped recipes from https://www.allmenus.com to recommend dishes with similar ingredients to an input dish. All restaurants in NYC serving the queried dish, or any of the 5 most similar dishes are displayed on a map.
+
 # 1. [Nana] Scraping Menu Data
 
 We scraped the menus of the top 500 most popular restaurants in NYC according to https://www.allmenus.com/ny/new-york/-/.
@@ -29,9 +33,6 @@ The JSON output of each search is stored under `recipe_search_data` directory, w
 
 In this sense, each restaurant dish should correspond 1:1 to a JSON file in the `recipe_search_data` directory.
 
-The **current issue** with the code is that when the **dish name** is not "clean" and contains junk words, the recipe API does not return any results.
-For this reason, Nana has not finished running the code through all the current scraped dish names.
-
 Below are examples of dish names that need cleaning up as they currently return 0 recipe results:
 - "08. virginia ham" -> remove the "08" 
 - "03. vegetarian omelette peppers&comma; onions&comma; tomatoes and cheese" -> remove "03. and &comma and ;"
@@ -40,10 +41,7 @@ Below are examples of dish names that need cleaning up as they currently return 
 - "hail caesar salad" -> there could be more results if we removed "hail"
 - "(boar's head meat) philly cheese steak" -> There would probably be results stored if we got rid of "(boar's head meat)" in the search query
 
-To get more ideas of how we could clean up dish names, refer to the log file in `recipes/log_1st_edaman_recipe_search_api_run.txt`.
-
 # 3. [Swaraj Patankar] Match dishes from menu data to recipes
-
 
 
 - Sign up for an account on Edaman and get your own application key and application id so we are not rate limited by just 1 account. Just remember to modify these values in `scrape_recipes.py` `__init__`. 
@@ -87,5 +85,3 @@ Visualization will depend on 2 other files viz/d3_data.csv and viz/restaurant_lo
 Snapshot of preliminary visualization with real data is shown below. Typing/selection in dish drop-down is propogated to similar dishes and restaurants lists and the restaurants are marked on the map.
 
 ![index](images/index.JPG)
-
-TODO: Click events beyond highlights in the lists and map, styling improvements.

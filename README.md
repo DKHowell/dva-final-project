@@ -2,7 +2,7 @@
 
 # Overview
 
-This project uses scraped recipes from https://www.allmenus.com to recommend dishes with similar ingredients to an input dish. All restaurants in NYC serving the queried dish, or any of the 5 most similar dishes are displayed on a map.
+This project uses scraped recipes from https://www.allmenus.com to recommend dishes with similar ingredients to an input dish. All restaurants in NYC serving the queried dish, or any of the 5 most similar dishes are displayed on a map. My primary responsibility was cleaning the recipe data, and determining which recipes were most similar to each other, and providing an output that was simple to translate into our visualization. Please see https://github.com/DKHowell/dva-final-project/blob/main/find_similar_dishes.py.
 
 # 1. [Nana] Scraping Menu Data
 
